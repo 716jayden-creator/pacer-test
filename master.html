@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마스터 화면 — 순장유형테스트</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans KR',Arial,sans-serif;color:#1F3D2A;min-height:100vh;
+    background:linear-gradient(180deg,#9FD3F5 0%,#CFEAFB 45%,#EEF8F1 80%,#F6F2EF 100%);word-break:keep-all}
+  .page{max-width:1600px;margin:0 auto;padding:36px 48px 40px;display:flex;flex-direction:column;gap:28px;min-height:100vh}
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+  .badge{display:inline-block;background:#1F3D2A;color:#E9F7D8;font-size:16px;font-weight:700;padding:8px 16px;border-radius:999px}
+  h1{font-size:52px;font-weight:900;line-height:1.2;margin-top:14px;letter-spacing:-.02em}
+  h1 mark{background:linear-gradient(transparent 58%,#B8E07F 58%);color:inherit;padding:0 6px}
+  .total{font-size:24px;font-weight:700;color:#3E5A46;margin-top:10px}
+  .total b{font-size:40px;font-weight:900;color:#2E5E3A;margin:0 4px}
+  .qr{background:#FFFFFF;border-radius:20px;padding:16px 16px 12px;text-align:center;box-shadow:0 8px 24px rgba(31,61,42,.15);flex:none}
+  .qr #qr{width:150px;height:150px}
+  .qr #qr img,.qr #qr canvas{width:150px!important;height:150px!important}
+  .qr p{font-size:15px;font-weight:800;margin-top:8px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;flex:1}
+  .card{background:#FFFFFF;border-radius:24px;padding:14px 14px 22px;box-shadow:0 10px 28px rgba(31,61,42,.14);display:flex;flex-direction:column;gap:14px;position:relative;transition:transform .4s}
+  .card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px;display:block}
+  .card.top{transform:translateY(-8px);box-shadow:0 16px 36px rgba(46,94,58,.28);outline:4px solid #9BD36A}
+  .crown{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#2E5E3A;color:#FFFFFF;font-size:15px;font-weight:800;padding:6px 14px;border-radius:999px;display:none}
+  .card.top .crown{display:block}
+  .row{display:flex;align-items:baseline;justify-content:space-between;padding:0 6px}
+  .name{font-size:22px;font-weight:800}
+  .num{font-size:44px;font-weight:900;color:#2E5E3A}
+  .num small{font-size:20px;font-weight:700;margin-left:2px}
+  .bar{height:14px;background:#E3EFE5;border-radius:7px;overflow:hidden;margin:0 6px}
+  .bar i{display:block;height:100%;width:0;border-radius:7px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+  .pct{font-size:16px;font-weight:700;color:#5D7A64;padding:0 6px}
+  .hidden .num,.hidden .pct{filter:blur(10px)}
+  .hidden .bar i{width:0!important}
+  footer{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#5D7A64}
+  .btn{border:0;border-radius:999px;padding:12px 22px;font:inherit;font-size:16px;font-weight:800;cursor:pointer;background:#2E5E3A;color:#FFFFFF;box-shadow:0 4px 0 #1A3A22}
+  .warn{background:#FFF4D6;border:2px solid #F2C94C;color:#6B4E00;border-radius:16px;padding:16px 20px;font-size:17px;font-weight:600;display:none}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)} h1{font-size:36px} .qr{display:none}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <span class="badge">20th 순장사관학교 · THE PACER RUN</span>
+      <h1>우리 순장들은<br><mark>어떤 유형</mark>일까?</h1>
+      <p class="total">지금까지 <b id="total">0</b>명 참여</p>
+    </div>
+    <div class="qr"><div id="qr"></div><p>QR 찍고 참여하기</p></div>
+  </header>
+
+  <p class="warn" id="warn">config.js에 Apps Script 웹 앱 URL이 아직 없어요. URL을 넣으면 인원수가 표시됩니다.</p>
+
+  <div class="grid hidden" id="grid"></div>
+
+  <footer>
+    <span id="updated">불러오는 중…</span>
+    <button class="btn" id="toggle">결과 공개</button>
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const TYPES = [
+  {k:'C', name:'코치형',       color:'#4A90D9'},
+  {k:'R', name:'러닝메이트형', color:'#5DAA4A'},
+  {k:'H', name:'치어리더형',   color:'#F0A030'},
+  {k:'N', name:'내비게이터형', color:'#7B5FC7'}
+];
+const grid = document.getElementById('grid');
+grid.innerHTML = TYPES.map(t => `
+  <div class="card" id="card-${t.k}">
+    <span class="crown">가장 많아요</span>
+    <img src="img/${t.k}-v2.jpg" alt="${t.name}">
+    <div class="row"><span class="name">${t.name}</span><span class="num"><span id="n-${t.k}">0</span><small>명</small></span></div>
+    <div class="bar"><i id="b-${t.k}" style="background:${t.color}"></i></div>
+    <p class="pct" id="p-${t.k}">0%</p>
+  </div>`).join('');
+
+// QR for the test page (same folder, index.html)
+try{
+  const testUrl = location.href.replace(/master\.html.*$/, '');
+  new QRCode(document.getElementById('qr'), {text:testUrl, width:300, height:300, colorDark:'#1F3D2A', colorLight:'#FFFFFF'});
+}catch(e){}
+
+// reveal toggle
+let shown = false;
+document.getElementById('toggle').onclick = () => {
+  shown = !shown;
+  grid.classList.toggle('hidden', !shown);
+  document.getElementById('toggle').textContent = shown ? '결과 숨기기' : '결과 공개';
+};
+
+function render(d){
+  const c = d.counts || {C:0,R:0,H:0,N:0};
+  const total = d.total || 0;
+  document.getElementById('total').textContent = total;
+  const max = Math.max(c.C, c.R, c.H, c.N);
+  TYPES.forEach(t => {
+    const n = c[t.k] || 0;
+    const pct = total ? Math.round(n / total * 100) : 0;
+    document.getElementById('n-' + t.k).textContent = n;
+    document.getElementById('p-' + t.k).textContent = pct + '%';
+    document.getElementById('b-' + t.k).style.width = pct + '%';
+    document.getElementById('card-' + t.k).classList.toggle('top', total > 0 && n === max);
+  });
+  const now = new Date();
+  document.getElementById('updated').textContent = '마지막 업데이트 ' + now.toLocaleTimeString('ko-KR') + ' · 5초마다 자동 새로고침';
+}
+
+async function load(){
+  const api = window.PACER_API;
+  if(!api){ document.getElementById('warn').style.display = 'block'; document.getElementById('updated').textContent = '서버 주소 없음'; return; }
+  try{
+    const r = await fetch(api + (api.includes('?') ? '&' : '?') + 't=' + Date.now());
+    render(await r.json());
+  }catch(e){
+    document.getElementById('updated').textContent = '불러오기 실패 — 잠시 후 다시 시도합니다';
+  }
+}
+load();
+setInterval(load, 5000);
+</script>
+</body>
+</html>

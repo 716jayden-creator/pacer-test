@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>순장유형테스트 — 20기 순장사관학교</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
+<style>
+  :root{
+    --purple:#382672; --purple-2:#5B47A8; --lav:#ECE6F5; --cream:#F6F2EF;
+    --card:#FFFDFB; --ink:#2A2045; --muted:#4E4668; --green:#A7D081;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{font-family:'Noto Sans KR',Arial,sans-serif;background:var(--purple);color:var(--ink);-webkit-font-smoothing:antialiased;word-break:keep-all}
+  .wrap{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+  .screen{display:none;flex:1;flex-direction:column}
+  .screen.on{display:flex}
+
+  /* start */
+  #start{color:var(--cream);padding:56px 28px 40px;justify-content:space-between;
+    background:
+      linear-gradient(172deg, rgba(255,255,255,.05) 0 18%, transparent 18% 26%, rgba(255,255,255,.04) 26% 30%, transparent 30%),
+      var(--purple)}
+  .eyebrow{font-size:14px;font-weight:700;letter-spacing:.08em;color:var(--green)}
+  .hero{margin-top:28px}
+  #start{text-align:center;padding:44px 22px 36px;gap:22px;justify-content:flex-start}
+  .kicker{display:flex;align-items:center;justify-content:center;gap:12px;font-size:15px;font-weight:700;color:var(--green);letter-spacing:.02em}
+  .kicker span{display:block;width:36px;height:2px;background:var(--green)}
+  .logo{font-size:clamp(34px,11vw,50px);font-weight:900;line-height:1.05;margin-top:12px;color:var(--cream);letter-spacing:-.01em}
+  .logo em{font-style:inherit;color:var(--green)}
+  .uline{width:34%;height:6px;border-radius:3px;background:var(--green);margin:10px auto 0}
+  .pill{display:inline-block;margin-top:16px;padding:9px 20px;border-radius:999px;background:#4B3A8A;color:var(--cream);font-size:19px;font-weight:800}
+  .st-art{position:relative}
+  .chars{display:block;width:108%;margin-left:-4%;height:auto}
+  .pill-green{background:var(--green);color:var(--purple);font-size:16px;margin-top:-8px;position:relative}
+  #start p.lead{font-size:15px;line-height:1.7;color:#D4CCEB}
+  #start{position:relative;overflow:hidden;background:linear-gradient(180deg,#9FD3F5 0%,#CFEAFB 42%,#EEF8F1 78%,#F6F2EF 100%) !important;color:#1F3D2A;text-align:center;padding:0 !important;gap:0 !important}
+  .sky{position:absolute;inset:0;pointer-events:none}
+  .cloud{position:absolute;background:#FFFFFF;border-radius:999px;opacity:.85;filter:blur(.3px)}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:#FFFFFF;border-radius:50%}
+  .c1{width:120px;height:34px;top:70px;left:-20px;animation:drift 18s linear infinite}
+  .c1::before{width:56px;height:56px;left:22px;top:-26px}.c1::after{width:40px;height:40px;left:62px;top:-16px}
+  .c2{width:90px;height:26px;top:130px;right:-10px;animation:drift 22s linear infinite reverse}
+  .c2::before{width:42px;height:42px;left:16px;top:-20px}.c2::after{width:30px;height:30px;left:48px;top:-12px}
+  .c3{width:70px;height:20px;top:24px;right:90px;opacity:.6;animation:drift 26s linear infinite}
+  .c3::before{width:32px;height:32px;left:12px;top:-16px}.c3::after{width:24px;height:24px;left:36px;top:-10px}
+  @keyframes drift{0%{transform:translateX(0)}50%{transform:translateX(24px)}100%{transform:translateX(0)}}
+  .st-wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:34px 22px 40px}
+  .badge{display:inline-block;background:#1F3D2A;color:#E9F7D8;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;letter-spacing:.02em}
+  .st-h1{font-size:34px;line-height:1.28;font-weight:900;margin-top:18px;color:#1F3D2A;letter-spacing:-.02em}
+  .st-h1 mark{background:linear-gradient(transparent 58%,#B8E07F 58%);color:inherit;padding:0 4px}
+  .st-sub{font-size:16px;font-weight:600;color:#3E5A46;margin-top:10px}
+  .deck{position:relative;width:100%;height:215px;margin-top:24px}
+  .mc{position:absolute;top:10px;left:50%;width:36%;max-width:160px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;border:4px solid #FFFFFF;box-shadow:0 10px 24px rgba(31,61,42,.22);transform-origin:50% 100%;animation:bob 3.2s ease-in-out infinite}
+  .mc img{width:100%;height:100%;object-fit:cover;filter:blur(7px) saturate(1.3) brightness(1.02);transform:scale(1.15)}
+  .mc b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:54px;font-weight:900;color:#FFFFFF;text-shadow:0 3px 0 rgba(31,61,42,.35)}
+  .m1{--r:-16deg;--x:-100%;animation-delay:0s;top:26px}
+  .m2{--r:-6deg;--x:-66%;animation-delay:.4s;top:8px}
+  .m3{--r:6deg;--x:-30%;animation-delay:.8s;top:8px}
+  .m4{--r:16deg;--x:4%;animation-delay:1.2s;top:26px}
+  .mc{transform:translateX(var(--x)) rotate(var(--r))}
+  @keyframes bob{0%,100%{transform:translateX(var(--x)) rotate(var(--r)) translateY(0)}50%{transform:translateX(var(--x)) rotate(var(--r)) translateY(-10px)}}
+  .deck-cap{font-size:16px;font-weight:700;color:#1F3D2A;margin-top:4px}
+  .deck-cap b{color:#2E7D32}
+  .chips{display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  .chips span{background:rgba(255,255,255,.85);border:1.5px solid #CFE3D2;color:#2E5E3A;font-size:14px;font-weight:700;padding:7px 14px;border-radius:999px}
+  .btn-start{margin-top:22px;background:#2E5E3A;color:#FFFFFF;font-size:19px;box-shadow:0 5px 0 #1A3A22;animation:pulse 2.2s ease-in-out infinite;position:relative}
+  .btn-start:active{transform:translateY(3px);box-shadow:0 2px 0 #1A3A22}
+  .btn-start .arr{display:inline-block;margin-left:6px;transition:transform .2s}
+  .btn-start:hover .arr{transform:translateX(4px)}
+  @keyframes pulse{0%,100%{box-shadow:0 5px 0 #1A3A22,0 0 0 0 rgba(155,211,106,.6)}50%{box-shadow:0 5px 0 #1A3A22,0 0 0 10px rgba(155,211,106,0)}}
+  #start .meta{color:#5D7A64;margin-top:12px}
+  .track{position:absolute;left:-10%;right:-10%;bottom:-60px;height:120px;background:#E6A08A;border-radius:50% 50% 0 0;opacity:.35;z-index:0}
+  .track::before,.track::after{content:"";position:absolute;left:0;right:0;height:3px;background:#FFFFFF;opacity:.8;border-radius:50%}
+  .track::before{top:28px}.track::after{top:56px}
+  @media (prefers-reduced-motion: reduce){.mc,.cloud,.btn-start{animation:none}}
+  #result.on .timg{animation:flipin .8s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes flipin{0%{transform:perspective(900px) rotateY(90deg) scale(.85);opacity:0}60%{transform:perspective(900px) rotateY(-8deg) scale(1.02);opacity:1}100%{transform:perspective(900px) rotateY(0) scale(1)}}
+  .hero{margin-top:24px}
+  .hero svg{display:block;width:100%;height:auto}
+  .timg{display:block;width:100%;height:auto;border-radius:22px;margin-top:16px;aspect-ratio:1/1;background:#ECE6F5}
+  .tcard{margin-top:16px;border-radius:24px;padding:18px 22px 24px;color:#2A2045}
+  .tchar svg{display:block;width:72%;max-width:300px;height:auto;margin:0 auto}
+  .t-small{font-size:15px;font-weight:700;margin-top:4px;color:#4E4668}
+  .t-mid{font-size:20px;font-weight:800;margin-top:2px;color:#2A2045}
+  .t-big{font-size:34px;font-weight:900;line-height:1.2;margin-top:2px}
+  .types-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:32px}
+  .types-mini div{background:rgba(255,255,255,.08);border-radius:14px;padding:14px 16px;font-size:15px;font-weight:700}
+  .types-mini span{display:block;font-size:12px;font-weight:500;color:#D4CCEB;margin-top:4px}
+  .btn{display:block;width:100%;border:0;border-radius:16px;padding:18px;font:inherit;font-size:18px;font-weight:800;cursor:pointer}
+  .btn-green{background:var(--green);color:var(--purple)}
+  .btn-ghost{background:transparent;color:var(--purple);border:2px solid var(--purple)}
+  .meta{font-size:13px;color:#BFB5DE;text-align:center;margin-top:14px}
+
+  /* question */
+  #quiz{background:var(--cream);padding:28px 22px 32px}
+  .top{display:flex;align-items:center;gap:14px}
+  .back{border:0;background:transparent;font:inherit;font-size:15px;font-weight:700;color:var(--purple-2);cursor:pointer;padding:6px 0;visibility:hidden}
+  .progress{flex:1;height:8px;background:#E2DBEE;border-radius:4px;overflow:hidden}
+  .progress i{display:block;height:100%;width:0;background:var(--purple);border-radius:4px;transition:width .3s}
+  .count{font-size:14px;font-weight:700;color:var(--muted);min-width:44px;text-align:right}
+  .qbox{margin-top:36px}
+  .qnum{font-size:14px;font-weight:800;color:var(--purple-2)}
+  .qtext{font-size:24px;line-height:1.45;font-weight:800;color:var(--purple);margin-top:10px}
+  .opts{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+  .opt{text-align:left;border:2px solid transparent;background:var(--card);border-radius:16px;padding:18px 18px;font:inherit;font-size:16px;line-height:1.55;color:var(--ink);cursor:pointer;box-shadow:0 1px 0 rgba(56,38,114,.08);transition:border-color .15s, background .15s}
+  .opt:hover{border-color:#CFC4E8}
+  .opt.picked{border-color:var(--purple);background:var(--lav)}
+
+  /* result */
+  #result{background:var(--cream)}
+  .res-head{background:var(--purple);color:var(--cream);padding:44px 26px 34px;border-radius:0 0 28px 28px}
+  .res-head .eyebrow{color:var(--green)}
+  
+  .res-tag{font-size:16px;color:#D4CCEB;margin-top:16px;line-height:1.6}
+  .res-body{padding:24px 22px 36px;display:flex;flex-direction:column;gap:16px}
+  .card{background:var(--card);border-radius:20px;padding:22px}
+  .card h3{font-size:15px;font-weight:800;color:var(--purple-2);margin-bottom:8px}
+  .card p{font-size:16px;line-height:1.7;color:var(--ink)}
+  .card.dark{background:var(--purple);color:var(--cream)}
+  .card.dark h3{color:var(--green)}
+  .card.dark p{color:var(--cream)}
+  .scores{display:flex;flex-direction:column;gap:12px}
+  .srow{display:grid;grid-template-columns:96px 1fr 40px;align-items:center;gap:10px;font-size:15px;font-weight:700}
+  .srow .track{height:12px;background:#E2DBEE;border-radius:6px;overflow:hidden}
+  .srow .fill{height:100%;background:var(--purple-2);border-radius:6px;transition:width .6s}
+  .srow.top .fill{background:var(--purple)}
+  .srow .n{text-align:right;color:var(--muted);font-weight:500}
+  .srow.top span:first-child{color:var(--purple)}
+  .tip{font-size:13px;color:var(--muted);text-align:center;line-height:1.6}
+  .question-q{font-size:18px;font-weight:800;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="start" class="screen on">
+    <div class="sky"><i class="cloud c1"></i><i class="cloud c2"></i><i class="cloud c3"></i></div>
+    <div class="st-wrap">
+      <p class="badge">20th 순장사관학교 · THE PACER RUN</p>
+      <h1 class="st-h1">순모임에서 나는<br><mark>어떤 순장</mark>일까?</h1>
+      <p class="st-sub">12가지 순모임 상황, 당신의 선택은?</p>
+
+      <div class="deck" aria-hidden="true">
+        <div class="mc m1"><img src="img/C-v2.jpg" alt=""><b>?</b></div>
+        <div class="mc m2"><img src="img/R-v2.jpg" alt=""><b>?</b></div>
+        <div class="mc m3"><img src="img/H-v2.jpg" alt=""><b>?</b></div>
+        <div class="mc m4"><img src="img/N-v2.jpg" alt=""><b>?</b></div>
+      </div>
+      <p class="deck-cap">4장의 카드 중 <b>나의 카드</b>는?</p>
+
+      <div class="chips"><span>12문항</span><span>약 3분</span><span>정답 없음</span></div>
+
+      <button class="btn btn-start" id="go">내 순장 카드 뽑기 <span class="arr">→</span></button>
+      <p class="meta">결과는 강의 후 나눔 시간에 함께 사용해요</p>
+    </div>
+    <div class="track"></div>
+  </section>
+
+  <section id="quiz" class="screen">
+    <div class="top">
+      <button class="back" id="back">← 이전</button>
+      <div class="progress"><i id="prog"></i></div>
+      <span class="count" id="count">1/12</span>
+    </div>
+    <div class="qbox">
+      <p class="qnum" id="qnum">Q1</p>
+      <p class="qtext" id="qtext"></p>
+      <div class="opts" id="opts"></div>
+    </div>
+  </section>
+
+  <section id="result" class="screen">
+    <div class="res-head">
+      <p class="eyebrow">나의 순장 유형은</p>
+      <img class="timg" id="timg" alt="">
+      <p class="res-tag" id="rTag"></p>
+    </div>
+    <div class="res-body">
+      <div class="card">
+        <h3>나의 강점</h3>
+        <p id="rStrength"></p>
+      </div>
+      <div class="card">
+        <h3>나에게 필요한 능력</h3>
+        <p id="rCaution"></p>
+      </div>
+      <div class="card">
+        <h3>유형별 점수</h3>
+        <div class="scores" id="rScores"></div>
+      </div>
+      <p class="tip">결과 화면을 캡처해 두세요. 강의 후 나눔 시간에 사용합니다.</p>
+      <button class="btn btn-ghost" id="again">다시 하기</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="config.js"></script>
+<script>
+const TYPES = {
+  C:{name:'코치형', tag:'목표를 제시하고 성장을 이끄는 순장',
+     strength:'순원이 제자리에 머물지 않도록 다음 걸음을 보여 줍니다. 막연한 다짐을 구체적인 실천으로 바꾸도록 돕고, 순원이 자라는 모습을 보며 힘을 얻습니다.',
+     caution:'기다려 주는 공감이에요. 순원의 속도에 맞춰 멈춰 서고, 해결책을 말하기 전에 끝까지 들어 주는 러닝메이트의 능력이 더해지면 순원이 지치지 않고 함께 달릴 수 있어요.',
+     challenge:'러닝메이트처럼 달려 보세요. 이번 텀에는 해결책을 말하기 전에 순원의 이야기를 끝까지 들어 주세요.'},
+  R:{name:'러닝메이트형', tag:'순원의 이야기를 듣고 곁을 지키는 순장',
+     strength:'순원이 마음 깊은 이야기를 꺼낼 수 있는 안전한 사람입니다. 판단하지 않고 곁에 머물며, 순원이 혼자가 아니라는 것을 느끼게 해 줍니다.',
+     caution:'한 걸음 이끄는 힘이에요. 공감 위에 작은 다음 걸음을 함께 정해 주는 코치의 능력이 더해지면 순원이 머물지 않고 자라갈 수 있어요. 나도 지치지 않도록 건강한 경계를 세우는 지혜도 필요해요.',
+     challenge:'코치처럼 달려 보세요. 이번 텀에는 순원과 함께 실천할 작은 다음 걸음 하나를 정해 보세요.'},
+  H:{name:'치어리더형', tag:'격려하고 응원하며 힘을 주는 순장',
+     strength:'순 분위기를 밝게 만들고, 순원이 스스로를 귀하게 여기도록 힘을 줍니다. 낙심한 순원도 다시 일어설 용기를 얻습니다.',
+     caution:'말씀으로 세우는 힘이에요. 격려에 말씀 한 구절을 더하고, 필요할 때는 사랑으로 권면하는 내비게이터의 능력이 더해지면 응원이 더 오래 힘이 돼요.',
+     challenge:'내비게이터처럼 달려 보세요. 이번 텀에는 격려의 말과 함께 말씀 한 구절을 나눠 보세요.'},
+  N:{name:'내비게이터형', tag:'말씀을 통해 방향을 제시하는 순장',
+     strength:'흔들리는 순원에게 말씀으로 분명한 기준과 방향을 보여 줍니다. 순모임이 말씀 중심으로 깊어지도록 이끕니다.',
+     caution:'마음을 먼저 알아주는 따뜻함이에요. 가르치기 전에 칭찬과 격려 한마디를 건네는 치어리더의 능력이 더해지면 말씀이 순원의 마음 문을 열고 들어가요.',
+     challenge:'치어리더처럼 달려 보세요. 이번 텀에는 가르치기 전에 순원에게 먼저 칭찬과 격려 한마디를 건네 보세요.'}
+};
+const ORDER = ['C','R','H','N'];
+
+const QS = [
+  {q:'순원이 “요즘 신앙생활이 무기력해요”라고 말한다면?', o:{
+    C:'매일 큐티 5분처럼 작은 목표를 함께 정해 본다',
+    R:'왜 그런지 천천히 이야기를 들어 준다',
+    H:'“그래도 여기까지 온 게 대단해요!” 하고 힘을 준다',
+    N:'지금 상황에 맞는 말씀 한 구절을 나눈다'}},
+  {q:'순모임을 준비할 때 내가 가장 신경 쓰는 것은?', o:{
+    C:'이번 모임으로 순원들이 무엇을 결단할지',
+    R:'순원 한 명 한 명이 편하게 말할 시간이 충분한지',
+    H:'모임 분위기가 밝고 즐거운지',
+    N:'본문을 정확히 이해하고 핵심을 정리했는지'}},
+  {q:'한 순원이 3주째 순모임에 나오지 않는다면?', o:{
+    C:'다음 모임 날짜를 콕 집어 함께 오자고 제안한다',
+    R:'부담 없이 따로 만나 밥 먹자고 연락한다',
+    H:'“보고 싶어요!” 응원 메시지를 보낸다',
+    N:'기도하며 말씀 한 구절과 함께 안부를 전한다'}},
+  {q:'나눔 시간에 아무도 말을 하지 않는다면?', o:{
+    C:'질문을 더 구체적으로 바꿔 한 사람씩 묻는다',
+    R:'침묵을 기다려 주고 내 이야기를 먼저 꺼낸다',
+    H:'가벼운 질문이나 농담으로 분위기를 푼다',
+    N:'본문의 핵심으로 돌아가 다시 질문을 던진다'}},
+  {q:'순모임이 끝나고 순원들에게 듣고 싶은 말은?', o:{
+    C:'“순장님 덕분에 도전하게 됐어요”',
+    R:'“순장님이랑 이야기하면 편해요”',
+    H:'“순장님 만나면 힘이 나요”',
+    N:'“순장님 말씀 듣고 정리가 됐어요”'}},
+  {q:'순원이 진로 문제로 깊이 고민하고 있다면?', o:{
+    C:'선택지를 정리하고 언제까지 결정할지 함께 정한다',
+    R:'결론을 서두르지 않고 마음을 충분히 들어 준다',
+    H:'“어떤 선택이든 잘할 거예요” 하고 믿어 준다',
+    N:'하나님의 뜻을 구할 수 있는 말씀과 기준을 함께 찾는다'}},
+  {q:'순원이 실수와 죄책감으로 낙심해 있다면?', o:{
+    C:'다시 일어설 구체적인 다음 걸음을 함께 정한다',
+    R:'판단하지 않고 그 마음 곁에 머문다',
+    H:'“넘어져도 괜찮아요” 하고 따뜻하게 일으켜 세운다',
+    N:'회개와 용서의 말씀으로 방향을 잡아 준다'}},
+  {q:'순장으로서 가장 보람을 느끼는 순간은?', o:{
+    C:'순원이 눈에 띄게 성장했을 때',
+    R:'순원이 마음 깊은 이야기를 털어놓았을 때',
+    H:'순 분위기가 화기애애하고 모두 즐거울 때',
+    N:'순원이 말씀을 깨닫고 삶에 적용했을 때'}},
+  {q:'순 카톡방에서 나는 주로?', o:{
+    C:'이번 주 큐티 진도와 기도제목을 챙긴다',
+    R:'한 사람씩 개인적으로 안부를 묻는다',
+    H:'이모티콘과 칭찬으로 열심히 반응한다',
+    N:'오늘 묵상한 말씀을 나눈다'}},
+  {q:'순원들 사이에 갈등이 생겼다면?', o:{
+    C:'함께 대화할 자리를 만들고 해결 방법을 정한다',
+    R:'양쪽 이야기를 따로 충분히 들어 본다',
+    H:'서로의 좋은 점을 짚어 주며 관계를 다독인다',
+    N:'성경의 원칙에 비추어 어떻게 해야 할지 함께 본다'}},
+  {q:'순장 사역에서 내가 가장 중요하게 여기는 것은?', o:{
+    C:'성장과 변화',
+    R:'신뢰와 공감',
+    H:'기쁨과 격려',
+    N:'진리와 방향'}},
+  {q:'새 순원이 처음 순모임에 왔다면?', o:{
+    C:'순모임 방식과 앞으로의 과정을 안내한다',
+    R:'그 사람의 이야기와 사정을 먼저 묻는다',
+    H:'크게 환영하고 모두에게 소개한다',
+    N:'우리 순이 함께 붙잡는 말씀과 비전을 나눈다'}}
+];
+
+let i = 0, answers = [], orders = [];
+const $ = id => document.getElementById(id);
+
+function shuffle(a){ a=a.slice(); for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1)); [a[k],a[j]]=[a[j],a[k]];} return a; }
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on', s.id===id)); window.scrollTo(0,0); }
+
+function start(){
+  i = 0; answers = new Array(QS.length).fill(null);
+  orders = QS.map(()=>shuffle(ORDER));
+  render(); show('quiz');
+}
+
+function render(){
+  const q = QS[i];
+  $('qnum').textContent = 'Q' + (i+1);
+  $('qtext').textContent = q.q;
+  $('count').textContent = (i+1) + '/' + QS.length;
+  $('prog').style.width = (i/QS.length*100) + '%';
+  $('back').style.visibility = i>0 ? 'visible' : 'hidden';
+  const box = $('opts'); box.innerHTML = '';
+  orders[i].forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'opt' + (answers[i]===t ? ' picked' : '');
+    b.textContent = q.o[t];
+    b.onclick = ()=>pick(t, b);
+    box.appendChild(b);
+  });
+}
+
+let busy = false;
+function pick(t, el){
+  if(busy) return; busy = true;
+  answers[i] = t;
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('picked'));
+  el.classList.add('picked');
+  setTimeout(()=>{
+    busy = false;
+    if(i < QS.length-1){ i++; render(); } else { result(); }
+  }, 220);
+}
+
+
+function clientId(){
+  try{
+    let id = localStorage.getItem('pacer_id');
+    if(!id){ id = Date.now().toString(36) + Math.random().toString(36).slice(2,10); localStorage.setItem('pacer_id', id); }
+    return id;
+  }catch(e){ return 'anon-' + Math.random().toString(36).slice(2,10); }
+}
+function sendResult(type, scores){
+  const api = window.PACER_API;
+  if(!api) return;
+  try{
+    fetch(api, {method:'POST', mode:'no-cors', body: JSON.stringify({type:type, scores:scores, id:clientId()})}).catch(()=>{});
+  }catch(e){}
+}
+
+function result(){
+  const s = {C:0,R:0,H:0,N:0};
+  answers.forEach(a=>{ if(a) s[a]++; });
+  const ranked = ORDER.slice().sort((a,b)=>s[b]-s[a] || ORDER.indexOf(a)-ORDER.indexOf(b));
+  const top = ranked[0];
+  const ties = ranked.filter(t=>s[t]===s[top]);
+  const low = ranked[ranked.length-1];
+  const T = TYPES[top];
+  sendResult(top, s);
+
+  $('timg').src = 'img/' + top + '-v2.jpg';
+  $('timg').alt = T.name + ' 순장 캐릭터 카드';
+  $('rTag').textContent = ties.length>1
+    ? T.name + '과 ' + ties.slice(1).map(t=>TYPES[t].name).join(', ') + ' 성향이 비슷하게 나타났어요. ' + T.name + ' 설명을 먼저 보여 드려요.'
+    : T.name + ' · ' + T.tag;
+  $('rStrength').textContent = T.strength;
+  $('rCaution').textContent = T.caution;
+
+  const box = $('rScores'); box.innerHTML = '';
+  ranked.forEach(t=>{
+    const row = document.createElement('div');
+    row.className = 'srow' + (s[t]===s[top] ? ' top' : '');
+    row.innerHTML = '<span>'+TYPES[t].name+'</span><div class="track"><div class="fill" style="width:0"></div></div><span class="n">'+s[t]+'점</span>';
+    box.appendChild(row);
+    requestAnimationFrame(()=>{ row.querySelector('.fill').style.width = (s[t]/QS.length*100)+'%'; });
+  });
+  $('prog').style.width = '100%';
+  show('result');
+}
+
+
+/* ---------- illustrations (drawn in SVG) ---------- */
+const INK='#2A2045', SKIN='#FFE3CF';
+function limb(d,c){return `<path d="${d}" stroke="${INK}" stroke-width="21" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="${d}" stroke="${c}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;}
+function hand(x,y){return `<circle cx="${x}" cy="${y}" r="8" fill="${SKIN}" stroke="${INK}" stroke-width="3"/>`;}
+function star(x,y,s,c){return `<path d="M${x} ${y-s} L${x+s*.28} ${y-s*.28} L${x+s} ${y} L${x+s*.28} ${y+s*.28} L${x} ${y+s} L${x-s*.28} ${y+s*.28} L${x-s} ${y} L${x-s*.28} ${y-s*.28} Z" fill="${c}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`;}
+function heart(x,y,s,c){return `<path transform="translate(${x} ${y}) scale(${s})" d="M0 8 C-16 -2 -10 -16 0 -8 C10 -16 16 -2 0 8 Z" fill="${c}" stroke="${INK}" stroke-width="${2.5/s}" stroke-linejoin="round"/>`;}
+const HAIR={
+  short:c=>`<path d="M84 92 C80 54 106 48 122 50 C150 50 162 70 156 94 C150 78 134 70 118 75 C104 80 92 80 84 92 Z" fill="${c}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`,
+  long:c=>`<path d="M84 92 C80 54 106 48 122 50 C150 50 162 70 157 100 L160 130 C154 136 146 134 145 126 L148 86 C136 74 118 74 100 80 L95 126 C93 134 84 136 80 130 Z" fill="${c}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`,
+  bun:c=>`<circle cx="120" cy="50" r="13" fill="${c}" stroke="${INK}" stroke-width="3"/><path d="M84 92 C80 58 104 52 122 54 C148 54 160 70 156 94 C148 80 132 74 118 78 C104 82 92 82 84 92 Z" fill="${c}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`,
+  cap:c=>`<path d="M84 90 C82 58 104 50 122 52 C146 52 158 66 157 86 L178 90 C180 96 170 98 156 94 C146 84 130 80 116 82 C102 84 92 84 84 90 Z" fill="${c}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`
+};
+function person(o){
+  const top=o.top, bot=o.bottom||'#4A4170', sh=o.shoe||INK;
+  let legs, shoes;
+  if(o.legs==='run'){
+    legs=limb('M112 192 L96 210 L76 214',bot)+limb('M130 192 L150 212 L148 236',bot);
+    shoes=`<ellipse cx="70" cy="214" rx="11" ry="7" fill="${sh}" stroke="${INK}" stroke-width="2.5"/><ellipse cx="154" cy="240" rx="13" ry="7" fill="${sh}" stroke="${INK}" stroke-width="2.5"/>`;
+  } else {
+    legs=limb('M108 194 L106 234',bot)+limb('M132 194 L134 234',bot);
+    shoes=`<ellipse cx="102" cy="240" rx="13" ry="7" fill="${INK}"/><ellipse cx="138" cy="240" rx="13" ry="7" fill="${INK}"/>`;
+  }
+  const A={
+    down:[ 'M94 142 L80 182','M146 142 L160 182',[80,186],[160,186]],
+    cheer:['M94 142 L70 102','M146 142 L170 102',[68,98],[172,98]],
+    point:['M94 142 L80 180','M146 142 L172 110',[80,184],[175,105]],
+    hold: ['M94 144 L100 172','M146 144 L140 172',[102,176],[138,176]],
+    listen:['M94 142 L80 182','M146 142 L166 126 L156 100',[80,186],[154,96]],
+    run:  ['M94 144 L78 162 L92 178','M146 144 L166 130 L176 110',[94,180],[178,106]]
+  }[o.arms];
+  const glasses = o.glasses ? `<circle cx="107" cy="97" r="9" fill="none" stroke="${INK}" stroke-width="2.5"/><circle cx="133" cy="97" r="9" fill="none" stroke="${INK}" stroke-width="2.5"/><path d="M116 97 L124 97" stroke="${INK}" stroke-width="2.5"/>` : '';
+  return `<g>
+    ${legs}${shoes}
+    <rect x="88" y="126" width="64" height="74" rx="24" fill="${top}" stroke="${INK}" stroke-width="3"/>
+    ${limb(A[0],top)}${limb(A[1],top)}
+    ${o.back||''}
+    ${hand(...A[2])}${hand(...A[3])}
+    <circle cx="120" cy="92" r="36" fill="${SKIN}" stroke="${INK}" stroke-width="3"/>
+    ${HAIR[o.hair](o.hairColor||INK)}
+    <circle cx="107" cy="98" r="3.6" fill="${INK}"/><circle cx="133" cy="98" r="3.6" fill="${INK}"/>
+    ${glasses}
+    <ellipse cx="99" cy="110" rx="6" ry="4" fill="#F4A6A6" opacity=".8"/><ellipse cx="141" cy="110" rx="6" ry="4" fill="#F4A6A6" opacity=".8"/>
+    <path d="M112 111 Q120 119 128 111" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    ${o.front||''}
+  </g>`;
+}
+function arrowUp(x,y,c){return `<path d="M${x} ${y+22} L${x} ${y} M${x-7} ${y+7} L${x} ${y} L${x+7} ${y+7}" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;}
+const CHAR={
+  C:()=>person({hair:'cap',hairColor:'#3E7B2A',top:'#8CC66B',arms:'point',
+      back:`<rect x="58" y="166" width="32" height="42" rx="5" fill="#FFFDFB" stroke="${INK}" stroke-width="3"/><rect x="66" y="161" width="16" height="9" rx="2" fill="${INK}"/><path d="M64 182 H84 M64 191 H80 M64 200 H82" stroke="#8CC66B" stroke-width="3" stroke-linecap="round"/>`,
+      front:`<path d="M114 128 L120 146" stroke="${INK}" stroke-width="2.5"/><circle cx="121" cy="150" r="6" fill="#F2C94C" stroke="${INK}" stroke-width="2.5"/>`})
+      + arrowUp(36,44,'#3E7B2A')+arrowUp(52,66,'#E76F51')+star(204,170,9,'#F2C94C'),
+  R:()=>person({hair:'short',hairColor:'#6B4A3A',top:'#7FB2DE',arms:'listen'})
+      + `<rect x="166" y="22" width="62" height="38" rx="18" fill="#FFFDFB" stroke="${INK}" stroke-width="3"/><path d="M178 58 L172 70 L190 59" fill="#FFFDFB" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><circle cx="184" cy="41" r="3.5" fill="${INK}"/><circle cx="197" cy="41" r="3.5" fill="${INK}"/><circle cx="210" cy="41" r="3.5" fill="${INK}"/>`
+      + heart(42,70,1.2,'#F28CB1')+heart(200,150,.9,'#F28CB1'),
+  H:()=>person({hair:'bun',hairColor:'#B4661A',top:'#F6A85E',arms:'cheer',
+      front:`<g stroke="${INK}" stroke-width="2.5"><circle cx="58" cy="90" r="11" fill="#F28CB1"/><circle cx="72" cy="82" r="11" fill="#FFD166"/><circle cx="66" cy="100" r="11" fill="#FFD166"/><circle cx="80" cy="94" r="10" fill="#F28CB1"/><circle cx="182" cy="90" r="11" fill="#F28CB1"/><circle cx="168" cy="82" r="11" fill="#FFD166"/><circle cx="174" cy="100" r="11" fill="#FFD166"/><circle cx="160" cy="94" r="10" fill="#F28CB1"/></g>`})
+      + star(30,40,10,'#FFD166')+star(212,36,8,'#FFFDFB')+star(206,190,10,'#FFD166')+star(28,170,7,'#FFFDFB'),
+  N:()=>person({hair:'long',hairColor:INK,top:'#9C8BD6',arms:'hold',glasses:true,
+      front:`<path d="M120 166 Q104 160 88 164 L88 194 Q104 190 120 196 Z" fill="#FFFDFB" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path d="M120 166 Q136 160 152 164 L152 194 Q136 190 120 196 Z" fill="#FFFDFB" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path d="M104 170 V186 M98 175 H110" stroke="#5B47A8" stroke-width="3" stroke-linecap="round"/><path d="M128 174 H144 M128 181 H142" stroke="#CFC4E8" stroke-width="2.5" stroke-linecap="round"/>`})
+      + `<path d="M202 24 C188 24 182 36 186 46 L202 70 L218 46 C222 36 216 24 202 24 Z" fill="#5B47A8" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><circle cx="202" cy="40" r="6" fill="#FFFDFB"/>`
+      + `<path d="M24 196 Q40 180 30 160 Q22 146 40 132" stroke="#5B47A8" stroke-width="3" stroke-dasharray="5 6" fill="none" stroke-linecap="round"/>`+star(42,48,8,'#FFFDFB')
+};
+const LOOK={
+  C:{bg:'#D6EBC3',ink:'#2F6B1E',mid:'목표를 향해 함께 뛰는',big:'열정 코치'},
+  R:{bg:'#D3E5F4',ink:'#22558A',mid:'끝까지 곁을 지키는',big:'든든한 러닝메이트'},
+  H:{bg:'#FBE3BE',ink:'#A4510F',mid:'어디서나 힘을 불어넣는',big:'응원 요정 치어리더'},
+  N:{bg:'#E3DCF3',ink:'#4A3796',mid:'말씀으로 길을 찾는',big:'믿음직한 내비게이터'}
+};
+function charSVG(t){return `<svg viewBox="0 0 240 256" role="img" aria-label="${TYPES[t].name} 캐릭터">${CHAR[t]()}</svg>`;}
+
+function heroSVG(){
+  const lead=person({hair:'short',hairColor:INK,top:'#A7D081',bottom:'#7E6CC4',shoe:'#F6F2EF',arms:'run',legs:'run'});
+  const mate=person({hair:'bun',hairColor:'#6B4A3A',top:'#CFC4E8',bottom:'#7E6CC4',shoe:'#F6F2EF',arms:'run',legs:'run'});
+  return `<svg viewBox="0 0 400 290" role="img" aria-label="함께 달리는 순장과 순원">
+    <circle cx="220" cy="140" r="122" fill="#FFFFFF" fill-opacity=".06"/>
+    <circle cx="220" cy="140" r="80" fill="#FFFFFF" fill-opacity=".05"/>
+    <g stroke="#FFFFFF" stroke-linecap="round" fill="none">
+      <path d="M0 256 Q200 242 400 250" stroke-opacity=".18" stroke-width="2"/>
+      <path d="M0 276 Q200 262 400 270" stroke-opacity=".12" stroke-width="2"/>
+      <path d="M10 110 H70" stroke-opacity=".22" stroke-width="5"/>
+      <path d="M26 140 H86" stroke-opacity=".16" stroke-width="5"/>
+      <path d="M4 170 H60" stroke-opacity=".12" stroke-width="5"/>
+    </g>
+    <path d="M0 265 Q200 251 400 259" stroke="#A7D081" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <g transform="translate(40 52) scale(.84)">${mate}</g>
+    <g transform="translate(150 12)">${lead}</g>
+    ${star(366,46,10,'#A7D081')}${star(330,20,6,'#FFFFFF')}${star(120,40,7,'#FFFFFF')}
+  </svg>`;
+}
+
+ORDER.forEach(t=>{ const im=new Image(); im.src='img/'+t+'-v2.jpg'; });
+
+$('go').onclick = start;
+$('again').onclick = ()=>show('start');
+$('back').onclick = ()=>{ if(i>0){ i--; render(); } };
+</script>
+</body>
+</html>
